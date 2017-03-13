@@ -1,6 +1,8 @@
 package datasource;
 
 import holder.PropertyHolder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,6 +26,8 @@ public class DataSource {
     private static String url;
     private static String user;
     private static String password ;
+    /* Логгер*/
+    Logger log = LogManager.getLogger(this.getClass().getName());
 
     public static DataSource getInstance() {
         if(instance == null)
@@ -38,14 +42,15 @@ public class DataSource {
         try {
             Class.forName(driverName);
             conn = DriverManager.getConnection(url, user, password);
+            log.info("Establishing connection...");
         }
         catch (ClassNotFoundException e) {
-
+            log.warn(e);
         }
         catch (SQLException e){
-
+            log.warn(e);
         }
-
+        log.info("Connection successful.");
         return conn;
     }
 }
