@@ -12,6 +12,6 @@ public interface OrderDAO {
     Order findById(int id);
 
     boolean create(Order order);
-    Order update(Order order);
+    boolean update(Order order);
     boolean delete(Order order);
 }

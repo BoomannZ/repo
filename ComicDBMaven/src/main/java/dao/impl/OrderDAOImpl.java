@@ -25,8 +25,8 @@ public class OrderDAOImpl implements OrderDAO{
     }
 
     @Override
-    public Order update(Order order) {
-        return null;
+    public boolean update(Order order) {
+        return false;
     }
 
     @Override

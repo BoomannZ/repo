@@ -25,10 +25,10 @@ public class Main {
         comicTypes.add(ComicType.DELUXE);
         comicTypes.add(ComicType.OTHER);
         comic.setComicTypeList(comicTypes);
-
+        System.out.println(comic.getComicTypeList().get(0));
         ComicDTO comicDTO = Transformer.transformComicToComicDTO(comic);
         System.out.println(comicDTO.getName());
-
+        System.out.println(comicDTO.getComicTypeList());
         List<ComicType> comicDTOTypes = comicDTO.getComicTypeList();
         System.out.println(comicDTOTypes.get(0));
         System.out.println(comicDTOTypes.get(1));

@@ -14,6 +14,6 @@ public interface ComicDAO {
     List<Comic> findAllByStatus(Status status);
 
     boolean create(Comic comic);
-    Comic update(Comic comic);
+    boolean update(Comic comic);
     boolean delete(Comic comic);
 }

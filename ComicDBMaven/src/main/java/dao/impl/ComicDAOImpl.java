@@ -32,8 +32,8 @@ public class ComicDAOImpl implements ComicDAO{
     }
 
     @Override
-    public Comic update(Comic comic) {
-        return null;
+    public boolean update(Comic comic) {
+        return false;
     }
 
     @Override

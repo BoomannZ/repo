@@ -15,8 +15,8 @@ public class UserDAOImpl implements UserDAO {
         return false;
     }
 
-    public User update(User user) {
-        return null;
+    public boolean update(User user) {
+        return false;
     }
 
     public boolean delete(User user) {
