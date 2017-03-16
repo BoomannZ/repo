@@ -1,5 +1,6 @@
 package entity;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -7,9 +8,18 @@ import java.util.List;
  * Created by Boo on 12.03.2017.
  */
 public class Order {
+    @Id
+    @GeneratedValue
+    @Column
     private int id;
+  /*  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = ) */
     private List<Comic> comicList;
+    @Column
+    private boolean paid;
+    @Column
     private Date date;
+    @Column
     private String comment;
 
     public int getId() {
@@ -44,4 +54,10 @@ public class Order {
         this.comment = comment;
     }
 
+    public boolean isPaid() {
+        return paid;
+    }
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
 }
