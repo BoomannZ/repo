@@ -9,6 +9,7 @@ import java.util.List;
 public class OrderDTO {
     private int id;
     private List<ComicDTO> comicList;
+    private boolean paid;
     private Date date;
     private String comment;
 
@@ -42,5 +43,13 @@ public class OrderDTO {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 }

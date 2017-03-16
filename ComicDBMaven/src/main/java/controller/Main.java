@@ -3,6 +3,7 @@ package controller;
 import dto.ComicDTO;
 import entity.Comic;
 import entity.ComicType;
+import entity.EnumComicType;
 import helper.Transformer;
 import holder.PropertyHolder;
 import org.apache.logging.log4j.LogManager;
@@ -21,17 +22,13 @@ public class Main {
 
         Comic comic = new Comic();
         comic.setName("Action Comics #21");
+        ComicType absolute = new ComicType();
+        absolute.setId(2);
+        absolute.setDescription("frequently slipcased");
+        absolute.setType(EnumComicType.ABSOLUTE);
         List<ComicType> comicTypes = new ArrayList<ComicType>();
-        comicTypes.add(ComicType.DELUXE);
-        comicTypes.add(ComicType.OTHER);
-        comic.setComicTypeList(comicTypes);
-        System.out.println(comic.getComicTypeList().get(0));
-        ComicDTO comicDTO = Transformer.transformComicToComicDTO(comic);
-        System.out.println(comicDTO.getName());
-        System.out.println(comicDTO.getComicTypeList());
-        List<ComicType> comicDTOTypes = comicDTO.getComicTypeList();
-        System.out.println(comicDTOTypes.get(0));
-        System.out.println(comicDTOTypes.get(1));
+        comicTypes.add(absolute);
+        System.out.println(comicTypes.get(0).getDescription());
 
         try {
             Thread.sleep(2000);
