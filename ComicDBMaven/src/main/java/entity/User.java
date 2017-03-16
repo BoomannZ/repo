@@ -8,7 +8,6 @@ public class User {
     private String login;
     private String password;
     private String name;
-    private UserRole userRole;
 
     public int getId() {
         return id;
@@ -42,11 +41,4 @@ public class User {
         this.name = name;
     }
 
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
-    }
 }

@@ -1,7 +1,5 @@
 package dto;
 
-import entity.UserRole;
-
 /**
  * Created by Boo on 13.03.2017.
  */
@@ -10,7 +8,6 @@ public class UserDTO {
     private String login;
     private String password;
     private String name;
-    private UserRole userRole;
 
     public int getId() {
         return id;
@@ -44,11 +41,4 @@ public class UserDTO {
         this.name = name;
     }
 
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
-    }
 }
