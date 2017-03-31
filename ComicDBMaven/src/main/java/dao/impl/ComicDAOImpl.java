@@ -3,8 +3,10 @@ package dao.impl;
 import dao.api.ComicDAO;
 import entity.Comic;
 import entity.ComicType;
-import entity.EnumComicType;
 import entity.Status;
+import holder.PropertyHolder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.transform.Result;
 import java.sql.*;
@@ -18,18 +20,22 @@ public class ComicDAOImpl implements ComicDAO{
 
     @Override
     public Comic findById(int id) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306");
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM comics C where id = ? JOIN comic_types CT ON C.id = CT.comic_id");
-        List<EnumComicType> comicTypes = new ArrayList<EnumComicType>();
+        Logger log = LogManager.getLogger("ComicDAOImpl");
+
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/comicdb?" +
+        "user="+ PropertyHolder.getInstance().getProperty("db.login") + "&password=" + PropertyHolder.getInstance().getProperty("db.password"));
+
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM comics C JOIN comic_types CT ON C.id = CT.id_comic  where id = ?");
+        List<ComicType> comicTypes = new ArrayList<ComicType>();
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             Comic comic = new Comic();
-            comic.setId(resultSet.getInt("id"));
-            comic.setName(resultSet.getString("name"));
-            comic.setDescription(resultSet.getString("description"));
-            comic.setStatus(Status.values()[resultSet.getInt("status")]);
             while (resultSet.next()) {
-                comicTypes.add(EnumComicType.values()[resultSet.getInt("type")]); //change accordingly to name in DB!
+                comic.setId(resultSet.getInt("id"));
+                comic.setName(resultSet.getString("name"));
+                comic.setDescription(resultSet.getString("description"));
+                comic.setStatus(Status.values()[resultSet.getInt("status")]);
+                comicTypes.add(ComicType.values()[resultSet.getInt("type")]);
             }
             comic.setComicTypeList(comicTypes);
 
