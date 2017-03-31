@@ -1,23 +1,14 @@
 package entity;
 
-import org.hibernate.annotations.Table;
-
-import javax.persistence.*;
 
 /**
  * Created by Boo on 12.03.2017.
  */
-@Entity
-@Table(appliesTo = "types")
 public class ComicType{
-        @Id
-        @GeneratedValue
-        @Column
+
         private int id;
-        @Column
-        @Enumerated(value = EnumType.ORDINAL)
+
         private EnumComicType type;
-        @Column
         private String description;
 
         public int getId() {

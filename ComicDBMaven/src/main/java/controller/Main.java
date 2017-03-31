@@ -30,6 +30,19 @@ public class Main {
         comicTypes.add(absolute);
         System.out.println(comicTypes.get(0).getDescription());
 
+        /*Driver initialization*/
+        try {
+
+            Class.forName("com.mysql.jdbc");
+
+        }
+        catch (ClassNotFoundException e) {
+
+            log.warn(e);
+        }
+        /* end of driver initialization */
+
+        /* delay to imitate work on HDD */
         try {
             Thread.sleep(2000);
             log.info("Waiting...");
@@ -39,7 +52,7 @@ public class Main {
         } catch (InterruptedException e) {
             log.warn(e);
         }
-
+        /* end of delay imitation block */
         log.info("Finished");
 
     }
