@@ -19,7 +19,7 @@ public class ComicDAOImpl implements ComicDAO{
     @Override
     public Comic findById(int id) throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306");
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM comics C where id = ? JOIN comicTypes  CT ON C.id = CT.comic_id");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM comics C where id = ? JOIN comic_types CT ON C.id = CT.comic_id");
         List<EnumComicType> comicTypes = new ArrayList<EnumComicType>();
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -29,7 +29,7 @@ public class ComicDAOImpl implements ComicDAO{
             comic.setDescription(resultSet.getString("description"));
             comic.setStatus(Status.values()[resultSet.getInt("status")]);
             while (resultSet.next()) {
-                comicTypes.add(EnumComicType.values()[resultSet.getInt("name of id column from joined table")]); //change accordingly to name in DB!
+                comicTypes.add(EnumComicType.values()[resultSet.getInt("type")]); //change accordingly to name in DB!
             }
             comic.setComicTypeList(comicTypes);
 
