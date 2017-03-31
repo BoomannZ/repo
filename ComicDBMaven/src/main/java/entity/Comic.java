@@ -1,32 +1,17 @@
 package entity;
 
-import org.hibernate.annotations.Table;
-
-import javax.persistence.*;
 import java.util.List;
 
 /**
  * Created by Boo on 12.03.2017.
  */
-@Entity
-@Table(appliesTo = "Comic")
 public class Comic {
-    @Id
-    @Column
-    @GeneratedValue
+
     private int id;
-    @Column
     private String name;
-    @Column
     private String description;
-    @Column
-    @Enumerated(value = EnumType.ORDINAL)
     private Status status;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "comic_types", joinColumns = {
-            @JoinColumn(name = "comic_id", nullable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "type_id",
-                    nullable = false) })
+
     private List<ComicType> comicTypeList;
 
     public int getId() {
