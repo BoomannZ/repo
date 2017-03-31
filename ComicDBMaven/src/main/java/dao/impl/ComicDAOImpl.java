@@ -39,7 +39,7 @@ public class ComicDAOImpl implements ComicDAO{
             }
             comic.setComicTypeList(comicTypes);
 
-
+        connection.close();
         return comic;
     }
 
