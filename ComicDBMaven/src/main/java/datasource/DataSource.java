@@ -37,11 +37,12 @@ public class DataSource {
         return instance;
     }
     /* методы data source */
-    public Connection getConnection() {
+    public Connection getConnection() throws NullPointerException {
         Connection conn = null;
         try {
             Class.forName(driverName);
-            conn = DriverManager.getConnection(url, user, password);
+            conn = DriverManager.getConnection("jdbc:mysql://"+ url +"?" +
+                    "user="+ user + "&password=" + password);
             log.info("Establishing connection...");
         }
         catch (ClassNotFoundException e) {

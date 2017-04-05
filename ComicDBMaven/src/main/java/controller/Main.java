@@ -3,6 +3,7 @@ package controller;
 import dto.ComicDTO;
 import entity.Comic;
 import entity.ComicType;
+import entity.Status;
 import holder.PropertyHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         /* Initialize logger*/
         Logger log = LogManager.getLogger("Main");
 
@@ -30,16 +31,17 @@ public class Main {
         System.out.println(comicTypes.get(0));
 
         /*Driver initialization*/
-        try {
-
-            Class.forName("com.mysql.jdbc.Driver");
-
-        }
-        catch (ClassNotFoundException e) {
-
-            log.warn(e);
-        }
+//        try {
+//
+//            Class.forName("com.mysql.jdbc.Driver");
+//
+//        }
+//        catch (ClassNotFoundException e) {
+//
+//            log.warn(e);
+//        }
         /* end of driver initialization */
+        /* findById test */
         ComicService comicService = new ComicServiceImpl();
         ComicDTO targetedComic;
         try {
@@ -57,17 +59,47 @@ public class Main {
         catch (SQLException e) {
             log.error(e);
         }
-        /* delay to imitate work on HDD */
+        /* end of findById test */
+        /* findByName test */
         try {
-            Thread.sleep(2000);
-            log.info("Waiting...");
-            Thread.sleep(2000);
-            log.info("Waiting...");
-
-        } catch (InterruptedException e) {
-            log.warn(e);
+            targetedComic = comicService.findByName("Klaus");
+            System.out.println("Found: " + targetedComic.getName());
+            System.out.println("Where: " + targetedComic.getStatus());
         }
-        /* end of delay imitation block */
+        catch (SQLException e) {
+            log.error(e);
+        }
+        /* end of findByName test */
+
+        /* findAllByStatus test */
+        List<ComicDTO> comics = null;
+        try {
+            comics = comicService.findAllByStatus(Status.IN_COLLECTION);
+
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        for (ComicDTO comicDTO : comics) {
+            System.out.println(comicDTO.getName() + " " + comicDTO.getDescription());
+        }
+        /* end of findAllByStatus test */
+
+        /* create test */
+            ComicDTO comicToAdd = new ComicDTO();
+            List<ComicType> ct = new ArrayList<ComicType>();
+            comic.setId(11);
+            comic.setName("Маус");
+            comic.setDescription("на русском");
+            comic.setStatus(Status.IN_COLLECTION);
+            ct.add(ComicType.OTHER);
+            ct.add(ComicType.HC);
+            comic.setComicTypeList(ct);
+        boolean isSusccesful = comicService.create(comicToAdd);
+        /* end of create test */
+        /* update test */
+        /* end of update test */
+        /* delete test */
+        /* end of delete test */
         log.info("Finished");
 
     }
