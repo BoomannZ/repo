@@ -11,15 +11,15 @@ public class UserDAOImpl implements UserDAO {
         return null;
     }
 
-    public boolean create(User user) {
-        return false;
+    public void create(User user) {
+
     }
 
-    public boolean update(User user) {
-        return false;
+    public void update(User user) {
+
     }
 
-    public boolean delete(User user) {
-        return false;
+    public void delete(User user) {
+
     }
 }

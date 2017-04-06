@@ -20,23 +20,22 @@ import java.util.TreeMap;
 /**
  * Created by Boo on 12.03.2017.
  */
-public class ComicDAOImpl implements ComicDAO{
+public class ComicDAOImpl implements ComicDAO {
+
+    Logger log = LogManager.getLogger("ComicDAOImpl");
 
     @Override
     public Comic findById(int id) throws SQLException {
-        Logger log = LogManager.getLogger("ComicDAOImpl");
 
         Connection connection = DataSource.getInstance().getConnection();
-
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM comics C JOIN comic_types CT ON C.id = CT.id_comic  where id = ?");
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
+        statement.setInt(1, id);
+        ResultSet resultSet = statement.executeQuery();
         return createComicFromResultSet(resultSet);
-
     }
 
     @Override
-    public Comic findByName(String name) throws SQLException{
+    public Comic findByName(String name) throws SQLException {
 
         Connection connection = DataSource.getInstance().getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM comics C JOIN comic_types CT ON C.id = CT.id_comic  where name = ?");
@@ -66,8 +65,7 @@ public class ComicDAOImpl implements ComicDAO{
                 comicTypesList.add(ComicType.values()[resultSet.getInt("type")]);
                 comic.setComicTypeList(comicTypesList);
                 resultMap.put(comicId, comic);
-            }
-            else {
+            } else {
                 List<ComicType> comicTypesList = comic.getComicTypeList();
                 comicTypesList.add(ComicType.values()[resultSet.getInt("type")]);
                 comic.setComicTypeList(comicTypesList);
@@ -79,72 +77,76 @@ public class ComicDAOImpl implements ComicDAO{
     }
 
     @Override
-    public boolean create(Comic comic) throws SQLException {
+    public void create(Comic comic) throws SQLException {
 
+        Integer idOfInsertedComic = 0;
         Connection connection = DataSource.getInstance().getConnection();
         connection.setAutoCommit(false);
-        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO comics VALUES name = ?, description = ?, status = ?");
+        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO comics(name, description, status) VALUES (?,?,?)");
         insertStatement.setString(1, comic.getName());
         insertStatement.setString(2, comic.getDescription());
-        Logger log = LogManager.getLogger();
-        log.info(comic.getStatus());
         insertStatement.setInt(3, comic.getStatus().ordinal());
         boolean insertExecutionResult = insertStatement.execute();
-
-        PreparedStatement insertStatement2 = connection.prepareStatement("INSERT INTO comic_types VALUES id_comic = ?, type = ?");
-        for(ComicType ct : comic.getComicTypeList()) {
-
-            insertStatement2.setInt(1, comic.getId());
-            insertStatement2.setInt(2, ct.ordinal());
-            insertStatement2.addBatch();
+        log.info("Insert statement is successful: " + insertExecutionResult);
+        PreparedStatement getInsertedIdStatement = connection.prepareStatement("SELECT id FROM comics WHERE name = ? AND description = ? AND status = ?");
+        getInsertedIdStatement.setString(1, comic.getName());
+        getInsertedIdStatement.setString(2, comic.getDescription());
+        getInsertedIdStatement.setInt(3, comic.getStatus().ordinal());
+        ResultSet resultSet = getInsertedIdStatement.executeQuery();
+        while (resultSet.next()) {
+            idOfInsertedComic = resultSet.getInt("id");
         }
-        boolean insert2ExecutionResult = insertStatement2.execute();
+        PreparedStatement insertStatement2 = connection.prepareStatement("INSERT INTO comic_types VALUES (?,?)");
+        for (ComicType ct : comic.getComicTypeList()) {
+
+            insertStatement2.setInt(1, idOfInsertedComic);
+            insertStatement2.setInt(2, ct.ordinal());
+            System.out.println(insertStatement2);
+            insertStatement2.execute();
+        }
         connection.commit();
         connection.close();
-        return insertExecutionResult && insert2ExecutionResult;
+
+
     }
 
     @Override
-    public boolean update(Comic comic) throws SQLException {
+    public void update(Comic comic) throws SQLException {
 
         Connection connection = DataSource.getInstance().getConnection();
         connection.setAutoCommit(false);
-
+        Integer comicId = findByName(comic.getName()).getId();
         PreparedStatement updateStatement = connection.prepareStatement("UPDATE comics SET name = ?, description = ?, status = ? WHERE id = ?");
         updateStatement.setString(1, comic.getName());
         updateStatement.setString(2, comic.getDescription());
         updateStatement.setInt(3, comic.getStatus().ordinal());
-        updateStatement.setInt(1, comic.getId());
-        boolean updateExecutionResult = updateStatement.execute();
-
+        updateStatement.setInt(4, comicId);
+        updateStatement.execute();
         PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM comic_types WHERE id_comic = ?");
-        deleteStatement.setInt(1, comic.getId());
-        boolean deleteExecutionResult = deleteStatement.execute();
-
-        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO comic_types VALUES id_comic = ?, type = ?");
+        deleteStatement.setInt(1, comicId);
+        deleteStatement.execute();
+        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO comic_types VALUES (?,?)");
         for (ComicType ct : comic.getComicTypeList()) {
-            insertStatement.setInt(1, comic.getId());
+            insertStatement.setInt(1, comicId);
             insertStatement.setInt(2, ct.ordinal());
-            insertStatement.addBatch();
+            insertStatement.execute();
         }
-        boolean insertExecutionResult = insertStatement.execute();
         connection.commit();
         connection.close();
-        return updateExecutionResult && deleteExecutionResult && insertExecutionResult;
     }
 
     @Override
-    public boolean delete(Comic comic) throws SQLException {
+    public void delete(Comic comic) throws SQLException {
 
         Connection connection = DataSource.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement("DELETE * FROM comics where id = ?");
-        statement.setInt(1, comic.getId());
-        boolean executionResult = statement.execute();
+        Integer comicId = findByName(comic.getName()).getId();
+        PreparedStatement statement = connection.prepareStatement("DELETE FROM comics where id = ?");
+        statement.setInt(1, comicId);
+        statement.execute();
         connection.close();
-        return executionResult;
     }
 
-    private Comic createComicFromResultSet(ResultSet resultSet) throws SQLException{
+    private Comic createComicFromResultSet(ResultSet resultSet) throws SQLException {
         Comic comic = new Comic();
         List<ComicType> comicTypes = new ArrayList<ComicType>();
         while (resultSet.next()) {

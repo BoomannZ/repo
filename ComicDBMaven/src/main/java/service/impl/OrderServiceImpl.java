@@ -28,23 +28,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean create(OrderDTO orderDTO) {
+    public void create(OrderDTO orderDTO) {
         OrderDAO orderDAO = new OrderDAOImpl();
         Order order = Transformer.transformOrderDTOToOrder(orderDTO);
-        return orderDAO.create(order);
+        orderDAO.create(order);
+
     }
 
     @Override
-    public boolean update(OrderDTO orderDTO) {
+    public void update(OrderDTO orderDTO) {
         OrderDAO orderDAO = new OrderDAOImpl();
         Order order = Transformer.transformOrderDTOToOrder(orderDTO);
-        return orderDAO.update(order);
+        orderDAO.update(order);
     }
 
     @Override
-    public boolean delete(OrderDTO orderDTO) {
+    public void delete(OrderDTO orderDTO) {
         OrderDAO orderDAO = new OrderDAOImpl();
         Order order = Transformer.transformOrderDTOToOrder(orderDTO);
-        return orderDAO.delete(order);
+        orderDAO.delete(order);
     }
 }

@@ -6,6 +6,8 @@ import dto.ComicDTO;
 import entity.Comic;
 import entity.Status;
 import helper.Transformer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import service.api.ComicService;
 
 import java.sql.SQLException;
@@ -15,6 +17,9 @@ import java.util.List;
  * Created by Boo on 13.03.2017.
  */
 public class ComicServiceImpl implements ComicService {
+
+    Logger log = LogManager.getLogger();
+
     @Override
     public ComicDTO findById(Integer id) throws SQLException{
         ComicDAO comicDAO = new ComicDAOImpl();
@@ -37,23 +42,24 @@ public class ComicServiceImpl implements ComicService {
     }
 
     @Override
-    public boolean create(ComicDTO comicDTO) throws SQLException{
+    public void create(ComicDTO comicDTO) throws SQLException{
         ComicDAO comicDAO = new ComicDAOImpl();
         Comic comic = Transformer.transformComicDTOToComic(comicDTO);
-        return comicDAO.create(comic);
+        comicDAO.create(comic);
     }
 
     @Override
-    public boolean update(ComicDTO comicDTO) throws SQLException{
+    public void update(ComicDTO comicDTO) throws SQLException{
         ComicDAO comicDAO = new ComicDAOImpl();
         Comic comic = Transformer.transformComicDTOToComic(comicDTO);
-        return comicDAO.update(comic);
+        comicDAO.update(comic);
+
     }
 
     @Override
-    public boolean delete(ComicDTO comicDTO) throws SQLException{
+    public void delete(ComicDTO comicDTO) throws SQLException{
         ComicDAO comicDAO = new ComicDAOImpl();
         Comic comic = Transformer.transformComicDTOToComic(comicDTO);
-        return comicDAO.delete(comic);
+        comicDAO.delete(comic);
     }
 }

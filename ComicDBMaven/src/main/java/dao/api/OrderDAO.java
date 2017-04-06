@@ -11,7 +11,7 @@ public interface OrderDAO {
     Order findByDate(Date date);
     Order findById(int id);
 
-    boolean create(Order order);
-    boolean update(Order order);
-    boolean delete(Order order);
+    void create(Order order);
+    void update(Order order);
+    void delete(Order order);
 }

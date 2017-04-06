@@ -8,7 +8,7 @@ import entity.User;
 public interface UserDAO {
     User findByLoginAndPassword(String login);
 
-    boolean create(User user);
-    boolean update(User user);
-    boolean delete(User user);
+    void create(User user);
+    void update(User user);
+    void delete(User user);
 }

@@ -19,23 +19,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean create(UserDTO userDTO) {
+    public void create(UserDTO userDTO) {
         UserDAO userDAO = new UserDAOImpl();
         User user = Transformer.transformUserDTOToUser(userDTO);
-        return userDAO.create(user);
+        userDAO.create(user);
     }
 
     @Override
-    public boolean update(UserDTO userDTO) {
+    public void update(UserDTO userDTO) {
         UserDAO userDAO = new UserDAOImpl();
         User user = Transformer.transformUserDTOToUser(userDTO);
-        return userDAO.update(user);
+        userDAO.update(user);
     }
 
     @Override
-    public boolean delete(UserDTO userDTO) {
+    public void delete(UserDTO userDTO) {
         UserDAO userDAO = new UserDAOImpl();
         User user = Transformer.transformUserDTOToUser(userDTO);
-        return userDAO.delete(user);
+        userDAO.delete(user);
     }
 }

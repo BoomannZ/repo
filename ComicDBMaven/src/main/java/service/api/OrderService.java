@@ -11,7 +11,7 @@ public interface OrderService {
     OrderDTO findByDate(Date date);
     OrderDTO findById(Integer id);
 
-    boolean create(OrderDTO orderDTO);
-    boolean update(OrderDTO orderDTO);
-    boolean delete(OrderDTO orderDTO);
+    void create(OrderDTO orderDTO);
+    void update(OrderDTO orderDTO);
+    void delete(OrderDTO orderDTO);
 }

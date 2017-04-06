@@ -14,7 +14,7 @@ public interface ComicDAO {
     Comic findByName(String name) throws SQLException;
     List<Comic> findAllByStatus(Status status) throws SQLException;
 
-    boolean create(Comic comic) throws SQLException;
-    boolean update(Comic comic) throws SQLException;
-    boolean delete(Comic comic) throws SQLException;
+    void create(Comic comic) throws SQLException;
+    void update(Comic comic) throws SQLException;
+    void delete(Comic comic) throws SQLException;
 }

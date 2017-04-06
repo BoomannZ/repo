@@ -14,7 +14,7 @@ public interface ComicService {
     ComicDTO findByName(String name) throws SQLException;
     List<ComicDTO> findAllByStatus(Status status) throws SQLException;
 
-    boolean create(ComicDTO comicDTO) throws SQLException;
-    boolean update(ComicDTO comicDTO) throws SQLException;
-    boolean delete(ComicDTO comicDTO) throws SQLException;
+    void create(ComicDTO comicDTO) throws SQLException;
+    void update(ComicDTO comicDTO) throws SQLException;
+    void delete(ComicDTO comicDTO) throws SQLException;
 }

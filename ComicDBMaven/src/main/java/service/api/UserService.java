@@ -8,7 +8,7 @@ import dto.UserDTO;
 public interface UserService {
     UserDTO findByLoginAndPassword(String login);
 
-    boolean create(UserDTO userDTO);
-    boolean update(UserDTO userDTO);
-    boolean delete(UserDTO userDTO);
+    void create(UserDTO userDTO);
+    void update(UserDTO userDTO);
+    void delete(UserDTO userDTO);
 }

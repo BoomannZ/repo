@@ -85,20 +85,35 @@ public class Main {
         /* end of findAllByStatus test */
 
         /* create test */
-            ComicDTO comicToAdd = new ComicDTO();
-            List<ComicType> ct = new ArrayList<ComicType>();
-            comic.setId(11);
-            comic.setName("Маус");
-            comic.setDescription("на русском");
-            comic.setStatus(Status.IN_COLLECTION);
-            ct.add(ComicType.OTHER);
-            ct.add(ComicType.HC);
-            comic.setComicTypeList(ct);
-        boolean isSusccesful = comicService.create(comicToAdd);
+//            ComicDTO comicToAdd = new ComicDTO();
+//            List<ComicType> ct = new ArrayList<ComicType>();
+//            comicToAdd.setId(11);
+//            comicToAdd.setName("Maus");
+//            comicToAdd.setDescription("in Russian");
+//            comicToAdd.setStatus(Status.IN_COLLECTION);
+//            ct.add(ComicType.OTHER);
+//            ct.add(ComicType.HC);
+//            comicToAdd.setComicTypeList(ct);
+//            comicService.create(comicToAdd);
         /* end of create test */
         /* update test */
+//            ComicDTO comicToAdd = new ComicDTO();
+//            List<ComicType> ct = new ArrayList<ComicType>();
+//            comicToAdd.setName("MAUS");
+//            comicToAdd.setDescription("In Russian");
+//            comicToAdd.setStatus(Status.IN_WISHLIST);
+//            ct.add(ComicType.HC);
+//            ct.add(ComicType.OTHER);
+//            comicToAdd.setComicTypeList(ct);
+//            comicService.update(comicToAdd);
         /* end of update test */
         /* delete test */
+            ComicDTO comicToDelete = new ComicDTO();
+            List<ComicType> ct = new ArrayList<ComicType>();
+            comicToDelete.setName("Klaus");
+            comicToDelete.setStatus(Status.AT_DIMA);
+            comicToDelete.setDescription("");
+            comicService.delete(comicToDelete);
         /* end of delete test */
         log.info("Finished");
 
