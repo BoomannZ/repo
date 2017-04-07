@@ -86,8 +86,7 @@ public class ComicDAOImpl implements ComicDAO {
         insertStatement.setString(1, comic.getName());
         insertStatement.setString(2, comic.getDescription());
         insertStatement.setInt(3, comic.getStatus().ordinal());
-        boolean insertExecutionResult = insertStatement.execute();
-        log.info("Insert statement is successful: " + insertExecutionResult);
+        insertStatement.execute();
         PreparedStatement getInsertedIdStatement = connection.prepareStatement("SELECT id FROM comics WHERE name = ? AND description = ? AND status = ?");
         getInsertedIdStatement.setString(1, comic.getName());
         getInsertedIdStatement.setString(2, comic.getDescription());

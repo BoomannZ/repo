@@ -8,23 +8,24 @@ import helper.Transformer;
 import service.api.OrderService;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Boo on 13.03.2017.
  */
 public class OrderServiceImpl implements OrderService {
     @Override
-    public OrderDTO findByDate(Date date) {
+    public OrderDTO findByExactDate(Date date) {
         OrderDAO orderDAO = new OrderDAOImpl();
-        Order order = orderDAO.findByDate(date);
+        Order order = orderDAO.findByExactDate(date);
         return Transformer.transformOrderToOrderDTO(order);
     }
 
     @Override
-    public OrderDTO findById(Integer id) {
+    public List<OrderDTO> findByDateRange(Date beginDate, Date endDate) {
         OrderDAO orderDAO = new OrderDAOImpl();
-        Order order = orderDAO.findById(id);
-        return Transformer.transformOrderToOrderDTO(order);
+        List<Order> orderList = orderDAO.findByDateRange(beginDate, endDate);
+        return Transformer.transformOrderListToOrderDTOList(orderList);
     }
 
     @Override

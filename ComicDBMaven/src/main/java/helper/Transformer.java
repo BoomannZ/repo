@@ -71,4 +71,18 @@ public class Transformer {
         }
         return comicList;
     }
+    public static List<OrderDTO> transformOrderListToOrderDTOList(List<Order> orderList) {
+        List<OrderDTO> orderDTOList = new ArrayList<OrderDTO>();
+        for(Order order : orderList) {
+            orderDTOList.add(Transformer.transformOrderToOrderDTO(order));
+        }
+        return orderDTOList;
+    }
+    public static List<Order> transformOrderDTOListToOrderList(List<OrderDTO> orderDTOList) {
+        List<Order> orderList = new ArrayList<Order>();
+        for(OrderDTO orderDTO : orderDTOList) {
+            orderList.add(Transformer.transformOrderDTOToOrder(orderDTO));
+        }
+        return orderList;
+    }
 }

@@ -9,8 +9,6 @@ import java.util.List;
 public class Order {
 
     private int id;
-  /*  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = ) */
     private List<Comic> comicList;
 
     private boolean paid;
