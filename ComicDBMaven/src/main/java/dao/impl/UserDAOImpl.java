@@ -15,18 +15,20 @@ import java.sql.SQLException;
 public class UserDAOImpl implements UserDAO {
     public User findByLoginAndPassword(String login, String password) throws SQLException {
         Connection connection = DataSource.getInstance().getConnection();
-        PreparedStatement selectStatement = connection.prepareStatement("SELECT id FROM users WHERE login = ? AND password = ?");
+        PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM users WHERE login = ? AND password = ?");
         selectStatement.setString(1, login);
         selectStatement.setString(2, password);
         ResultSet  resultSet = selectStatement.executeQuery();
-        User user = new User();
-        while (resultSet.next()) {
-            user.setId(resultSet.getInt("id"));
-            user.setLogin(resultSet.getString("login"));
-            user.setPassword(resultSet.getString("password"));
-            user.setName(resultSet.getString("name"));
-        }
-        return user;
+        return createUserFromResultSet(resultSet);
+    }
+
+    @Override
+    public User findById(Integer id) throws SQLException {
+        Connection connection = DataSource.getInstance().getConnection();
+        PreparedStatement selectStatement = connection.prepareStatement("SELECT id FROM users WHERE id = ?");
+        selectStatement.setInt(1, id);
+        ResultSet  resultSet = selectStatement.executeQuery();
+        return createUserFromResultSet(resultSet);
     }
 
     public void create(User user) throws SQLException {
@@ -42,20 +44,30 @@ public class UserDAOImpl implements UserDAO {
 
     public void update(User user) throws SQLException {
 
-        Integer userId = findByLoginAndPassword(user.getLogin(), user.getPassword()).getId();
         Connection connection = DataSource.getInstance().getConnection();
         PreparedStatement updateStatement = connection.prepareStatement("UPDATE users SET login = ?, password = ?, name = ? WHERE id = ?");
         updateStatement.setString(1, user.getLogin());
         updateStatement.setString(2, user.getPassword());
         updateStatement.setString(3, user.getName());
-        updateStatement.setInt(4, userId);
+        updateStatement.setInt(4, user.getId());
+        updateStatement.execute();
     }
 
     public void delete(User user) throws SQLException {
 
-        Integer userId = findByLoginAndPassword(user.getLogin(), user.getPassword()).getId();
         Connection connection = DataSource.getInstance().getConnection();
         PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM users WHERE id = ?");
-        deleteStatement.setInt(1, userId);
+        deleteStatement.setInt(1, user.getId());
+        deleteStatement.execute();
+    }
+    private User createUserFromResultSet(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        while (resultSet.next()) {
+            user.setId(resultSet.getInt("id"));
+            user.setLogin(resultSet.getString("login"));
+            user.setPassword(resultSet.getString("password"));
+            user.setName(resultSet.getString("name"));
+        }
+        return user;
     }
 }

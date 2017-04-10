@@ -60,7 +60,6 @@ public class ComicDAOImpl implements ComicDAO {
                 comic = new Comic();
                 comic.setName(resultSet.getString("name"));
                 comic.setDescription(resultSet.getString("description"));
-                resultMap.put(comicId, comic);
                 List<ComicType> comicTypesList = new ArrayList<ComicType>();
                 comicTypesList.add(ComicType.values()[resultSet.getInt("type")]);
                 comic.setComicTypeList(comicTypesList);

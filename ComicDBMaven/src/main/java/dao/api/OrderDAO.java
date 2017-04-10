@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface OrderDAO {
     Order findByExactDate(Date date) throws SQLException;
-    List<Order> findByDateRange(Date beginDate, Date endDate);
+    List<Order> findByDateRange(Date beginDate, Date endDate) throws SQLException;
 
     void create(Order order) throws SQLException;
     void update(Order order) throws SQLException;

@@ -7,6 +7,7 @@ import entity.Order;
 import helper.Transformer;
 import service.api.OrderService;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -15,21 +16,21 @@ import java.util.List;
  */
 public class OrderServiceImpl implements OrderService {
     @Override
-    public OrderDTO findByExactDate(Date date) {
+    public OrderDTO findByExactDate(Date date) throws SQLException {
         OrderDAO orderDAO = new OrderDAOImpl();
         Order order = orderDAO.findByExactDate(date);
         return Transformer.transformOrderToOrderDTO(order);
     }
 
     @Override
-    public List<OrderDTO> findByDateRange(Date beginDate, Date endDate) {
+    public List<OrderDTO> findByDateRange(Date beginDate, Date endDate) throws SQLException {
         OrderDAO orderDAO = new OrderDAOImpl();
         List<Order> orderList = orderDAO.findByDateRange(beginDate, endDate);
         return Transformer.transformOrderListToOrderDTOList(orderList);
     }
 
     @Override
-    public void create(OrderDTO orderDTO) {
+    public void create(OrderDTO orderDTO) throws SQLException {
         OrderDAO orderDAO = new OrderDAOImpl();
         Order order = Transformer.transformOrderDTOToOrder(orderDTO);
         orderDAO.create(order);
@@ -37,14 +38,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void update(OrderDTO orderDTO) {
+    public void update(OrderDTO orderDTO) throws SQLException {
         OrderDAO orderDAO = new OrderDAOImpl();
         Order order = Transformer.transformOrderDTOToOrder(orderDTO);
         orderDAO.update(order);
     }
 
     @Override
-    public void delete(OrderDTO orderDTO) {
+    public void delete(OrderDTO orderDTO) throws SQLException {
         OrderDAO orderDAO = new OrderDAOImpl();
         Order order = Transformer.transformOrderDTOToOrder(orderDTO);
         orderDAO.delete(order);

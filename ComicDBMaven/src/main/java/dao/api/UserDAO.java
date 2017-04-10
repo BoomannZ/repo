@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public interface UserDAO {
     User findByLoginAndPassword(String login, String password) throws SQLException;
-
+    User findById(Integer id) throws SQLException;
     void create(User user) throws SQLException;
     void update(User user) throws SQLException;
     void delete(User user) throws SQLException;

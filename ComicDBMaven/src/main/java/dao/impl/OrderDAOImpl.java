@@ -1,6 +1,7 @@
 package dao.impl;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
+import dao.api.ComicDAO;
 import dao.api.OrderDAO;
 import datasource.DataSource;
 import entity.Comic;
@@ -10,8 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Boo on 12.03.2017.
@@ -21,23 +21,53 @@ public class OrderDAOImpl implements OrderDAO{
     public Order findByExactDate(Date date) throws SQLException {
 
         Connection connection = DataSource.getInstance().getConnection();
-        PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM orders O JOIN orders_comics WHERE date = ?");
+        PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM orders O JOIN orders_comics ON O.id = OC.id_order WHERE O.date = ?");
         selectStatement.setDate(1, new java.sql.Date(date.getTime()));
         ResultSet resultSet = selectStatement.executeQuery();
         Order order = new Order();
+        List<Comic> comicList = new ArrayList<Comic>();
+        ComicDAO comicDAO = new ComicDAOImpl();
         while(resultSet.next()) {
             order.setId(resultSet.getInt("id"));
             order.setDate(resultSet.getDate("date"));
             order.setComment(resultSet.getString("comment"));
             order.setPaid(resultSet.getBoolean("paid"));
-
+            comicList.add(comicDAO.findById(resultSet.getInt("id_comic")));
         }
         return order;
     }
 
     @Override
-    public List<Order> findByDateRange(Date beginDate, Date endDate) {
-        return null;
+    public List<Order> findByDateRange(Date beginDate, Date endDate) throws SQLException {
+        Map<Integer, Order> resultMap = new TreeMap<Integer, Order>();
+        List<Order> resultList = new ArrayList<Order>();
+        ComicDAO comicDAO = new ComicDAOImpl();
+        Connection connection = DataSource.getInstance().getConnection();
+        PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM orders O JOIN orders_comics ON O.id = OC.id_order WHERE O.date BETWEEN ? AND ?");
+        selectStatement.setDate(1, new java.sql.Date(beginDate.getTime()));
+        selectStatement.setDate(2, new java.sql.Date(endDate.getTime()));
+        ResultSet resultSet = selectStatement.executeQuery();
+        while (resultSet.next()) {
+            Integer orderId = resultSet.getInt("id");
+            Order order = resultMap.get(orderId);
+            if (order == null) {
+                order = new Order();
+                order.setId(resultSet.getInt("id"));
+                order.setDate(resultSet.getDate("date"));
+                order.setComment(resultSet.getString("comment"));
+                order.setPaid(resultSet.getBoolean("paid"));
+                List<Comic> comicList = new ArrayList<Comic>();
+                comicList.add(comicDAO.findById(resultSet.getInt("id_comic")));
+                order.setComicList(comicList);
+                resultMap.put(orderId, order);
+            } else {
+                List<Comic> comicList = order.getComicList();
+                comicList.add(comicDAO.findById(resultSet.getInt("id_comic")));
+                order.setComicList(comicList);
+            }
+            resultList = new ArrayList<Order>(resultMap.values());
+        }
+        return resultList;
     }
 
     @Override
