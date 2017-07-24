@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class Part1 {
     public static String convert1(String input) {
         StringBuilder sb = new StringBuilder();
-        String regex = "(\\S+)\\u003B(\\S+\\s\\S+)\\u003B(\\S+@\\S+)";
+        String regex = "(\\S+);(\\S+\\s\\S+);(\\S+@\\S+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
         while(matcher.find()) {
@@ -22,7 +22,7 @@ public class Part1 {
     }
     public static String convert2(String input) {
         StringBuilder sb = new StringBuilder();
-        String regex = "(\\S+)\\u003B(\\S+\\s\\S+)\\u003B(\\S+@\\S+)";
+        String regex = "(\\S+);(\\S+\\s\\S+);(\\S+@\\S+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
         while(matcher.find()) {
@@ -41,7 +41,7 @@ public class Part1 {
         }
         List<User> listOfUsers = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
-        String regex = "(\\S+)\\u003B(.+)(@.+)";
+        String regex = "(\\S+);(.+)(@.+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
         while(matcher.find()) {
@@ -69,13 +69,13 @@ public class Part1 {
     public static String convert4(String input) {
         Random r = new Random();
         StringBuilder sb = new StringBuilder();
-        String regexForHeaders = "^(\\S+)\\u003B(\\S+)";
+        String regexForHeaders = "^(\\S+);(\\S+)";
         Pattern pattern = Pattern.compile(regexForHeaders);
         Matcher matcher = pattern.matcher(input);
         while(matcher.find()) {
             sb.append(matcher.group(0) + ";Password" + System.lineSeparator());
         }
-        String regex = "(\\S+)\\u003B(\\S+\\s\\S+)\\u003B(\\S+@\\S+)";
+        String regex = "(\\S+);(\\S+\\s\\S+);(\\S+@\\S+)";
         pattern = Pattern.compile(regex);
         matcher = pattern.matcher(input);
         while(matcher.find()) {

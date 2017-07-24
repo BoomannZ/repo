@@ -11,14 +11,14 @@ public class Part2 {
     public static String convert(String input) {
         StringBuilder sb = new StringBuilder();
         Set<String> words = new HashSet<>();
-        String regexp = "(\\b[a-zA-Z']+\\b)";
+        String regexp = "(?U)(\\b\\w+\\b)";
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(input);
         while (matcher.find()) {
             words.add(matcher.group(0));
 
         }
-        String[] wordsArray = (String[])words.toArray();
+        String[] wordsArray = Arrays.copyOf(words.toArray(), words.toArray().length, String[].class);
 
         int max = wordsArray[0].length();
         int min = wordsArray[0].length();
@@ -37,18 +37,20 @@ public class Part2 {
         {
             if(s.length() == min) {
                 sb.append(s);
-                sb.append(",");
+                sb.append(", ");
             }
         }
+        sb.delete(sb.length() - 2, sb.length());
         sb.append(System.lineSeparator());
         sb.append("Max: ");
         for (String s : wordsArray)
         {
             if(s.length() == max) {
                 sb.append(s);
-                sb.append(",");
+                sb.append(", ");
             }
         }
+        sb.delete(sb.length() - 2, sb.length());
         sb.append(System.lineSeparator());
         return sb.toString();
 
